@@ -5,6 +5,7 @@ import com.example.test.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,5 +26,8 @@ public class CarService {
         return car.orElse(null); // or throw an exception if preferred
     }
 
+    public List<Car> getAllCars() {
+        return carRepository.findAll();
+    }
 
 }
