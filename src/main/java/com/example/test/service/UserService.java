@@ -1,5 +1,6 @@
 package com.example.test.service;
 
+import com.example.test.dto.PasswordChangeRequest;
 import com.example.test.entities.User;
 import com.example.test.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -29,21 +31,6 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public User changePassword(User user, String oldPassword, String newPassword) throws Exception {
-        // Fetch the current user from the database
-        User currentUser = userRepository.findById(user.getId()).orElseThrow(() -> new Exception("User not found"));
-
-        // Check if the old password matches the current password
-        if (!bCryptPasswordEncoder.matches(oldPassword, currentUser.getPassword())) {
-            throw new Exception("Old password is incorrect");
-        }
-
-        // Encode the new password and set it
-        currentUser.setPassword(bCryptPasswordEncoder.encode(newPassword));
-
-        // Save the updated user
-        return userRepository.save(currentUser);
-    }
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
@@ -56,5 +43,20 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Collections.emptyList());
+    }
+
+    public void changePassword(PasswordChangeRequest request) {
+        Optional<User> optionalUser = userRepository.findById(request.getId());
+        optionalUser.ifPresent(user -> {
+            if (bCryptPasswordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+                user.setPassword(bCryptPasswordEncoder.encode(request.getNewPassword()));
+                userRepository.save(user);
+            } else {
+                throw new RuntimeException("Old password is incorrect");
+            }
+        });
+        if (!optionalUser.isPresent()) {
+            throw new RuntimeException("User not found");
+        }
     }
 }

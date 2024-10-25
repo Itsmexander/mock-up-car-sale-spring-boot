@@ -1,9 +1,11 @@
 package com.example.test.controller;
 
 
+import com.example.test.dto.PasswordChangeRequest;
 import com.example.test.entities.User;
 import com.example.test.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,5 +37,10 @@ public class AuthController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return "User logged in successfully";
+    }
+    @PostMapping("/passwordChange")
+    public ResponseEntity<?> changePassword(@RequestBody PasswordChangeRequest request) {
+        userService.changePassword(request);
+        return ResponseEntity.ok("Password changed successfully");
     }
 }

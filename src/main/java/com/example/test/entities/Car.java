@@ -1,6 +1,8 @@
 package com.example.test.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -8,6 +10,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.Instant;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity(name = "car")
 @EntityListeners(AuditingEntityListener.class)
 public class Car {
@@ -23,24 +27,16 @@ public class Car {
     private float price;
 
     //    @Lob
-    @Column(name = "car_other_description"/*, columnDefinition = "CLOB"*/)
+    @Column(name = "car_other_description",columnDefinition = "VARCHAR(4000)"/*, columnDefinition = "CLOB"*/)
     private String carDesc;
-//    @Column(name = "car_type")
-//    private String carType;
-//    @Column(name = "gear_type")
-//    private String gearType;
-//    @Column(name = "fuel_type")
-//    private String fuelType;
-//    @Column(name = "wheel_count")
-//    private String wheelCount;
     @Column(name = "manufacturer")
     private String manufacturer;
     @Column(name = "manufactured_year")
     private int manufacturedYear;
 
     @LastModifiedDate
-    @Column(name = "lastUpdate_timestamp")
-    private LocalDateTime lastModifiedDate;
+    @Column(name = "last_Update_timestamp")
+    private Instant lastModifiedDate;
     @CreationTimestamp
     @Column(name = "creation_timestamp")
     private Instant creationTimestamp;

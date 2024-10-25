@@ -33,7 +33,7 @@ public class User {
     private String password;
 
     @LastModifiedDate
-    @Column(name = "lastUpdate_timestamp")
+    @Column(name = "last_Update_timestamp")
     private Instant lastModifiedTimestamp;
     @CreationTimestamp
     @Column(name = "creation_timestamp")
