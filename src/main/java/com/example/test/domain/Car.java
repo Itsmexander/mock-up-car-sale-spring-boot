@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 
 @Getter
@@ -18,12 +19,11 @@ public class Car {
 
     private float price;
 
-
     private String carDesc;
 
     private String manufacturer;
     private int manufacturedYear;
 
-    private Instant lastModifiedDate;
-    private Instant creationTimestamp;
+    private Timestamp lastModifiedDate;
+    private Timestamp creationTimestamp;
 }

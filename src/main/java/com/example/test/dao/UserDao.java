@@ -5,7 +5,7 @@ import com.example.test.domain.User;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserDAO {
+public interface UserDao {
 
     Optional<User> getUserById(long id);
     List<User> getAllUsers();
