@@ -1,15 +1,15 @@
 package com.example.test.controller;
 
 
-import com.example.test.dto.CarInfoUpdateRequest;
-import com.example.test.entities.Car;
-import com.example.test.repository.CarRepository;
+import com.example.test.dao.CarDao;
+import com.example.test.dao.CarDaoImpl;
+import com.example.test.domain.Car;
 import com.example.test.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping
@@ -17,37 +17,37 @@ import java.util.List;
 public class CarController {
 
     private final CarService carService;
-    private final CarRepository carRepository;
+    private final CarDaoImpl carDao;
 
     @Autowired
-    public CarController(CarService carService, CarRepository carRepository) {
+    public CarController(CarService carService, CarDaoImpl carDao) {
         this.carService = carService;
-        this.carRepository = carRepository;
+        this.carDao = carDao;
     }
 
     @PostMapping("/cars/registerCar")
-    public Car registerCar(@RequestBody Car car) {
-        return carService.saveCar(car);
+    public void registerCar(@RequestBody Car car) {
+        carService.saveCar(car);
     }
 
     @GetMapping("/store")
     public List<Car> getAllCars() {
-        return carService.getAllCars();
+        return carService.getAll();
     }
 
     @PutMapping("/updateCar/{id}")
-    public ResponseEntity<?> updateCar(@PathVariable Long id, @RequestBody CarInfoUpdateRequest carInfoUpdateRequest) {
-        carService.updateCar(id, carInfoUpdateRequest);
-        return ResponseEntity.ok("car info updated");
+    public void updateCar(@RequestBody Car car, @PathVariable long id ) {
+        carService.updateCar(car,id);
+
     }
 
     @DeleteMapping("/deleteCar/{id}")
-    public void deleteCar(@PathVariable Long id) {
-        carService.deleteCarById(id);
+    public void deleteCar(Car car,@PathVariable Long id) {
+        carService.deleteCar(car,id);
     }
 
     @GetMapping("/car/{id}")
-    public Car getCarById(@PathVariable Long id) {
+    public Optional<Car> getCarById(@PathVariable Long id) {
         return carService.getCarById(id);
     }
 }

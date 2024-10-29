@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Timestamp;
-import java.time.Instant;
+
 
 @Getter
 @Setter
@@ -24,6 +24,6 @@ public class Car {
     private String manufacturer;
     private int manufacturedYear;
 
-    private Timestamp lastModifiedDate;
+    private Timestamp lastModifiedTimestamp;
     private Timestamp creationTimestamp;
 }
