@@ -15,11 +15,11 @@ public class Car {
     private long carId;
 
 
-    private String carName;
+    private String name;
 
     private float price;
 
-    private String carDesc;
+    private String notation;
 
     private String manufacturer;
     private int manufacturedYear;

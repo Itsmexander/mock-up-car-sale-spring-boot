@@ -38,7 +38,7 @@ public class UserDaoImpl implements UserDao {
                 user.setFirstname(rs.getString("firstname"));
                 user.setSurname(rs.getString("surname"));
                 user.setAddress(rs.getString("address"));
-                user.setTelNO(rs.getString("tel_no"));
+                user.setTelno(rs.getString("telno"));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setCreationTimestamp(rs.getTimestamp("creation_timestamp"));
@@ -62,10 +62,10 @@ public class UserDaoImpl implements UserDao {
             while (rs.next()) {
                 User user = new User();
                 user.setId(rs.getLong("id"));
-                user.setFirstname(rs.getString("first_name"));
+                user.setFirstname(rs.getString("firstname"));
                 user.setSurname(rs.getString("surname"));
                 user.setAddress(rs.getString("address"));
-                user.setTelNO(rs.getString("tel_no"));
+                user.setTelno(rs.getString("telno"));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setCreationTimestamp(rs.getTimestamp("creation_timestamp"));
@@ -80,22 +80,21 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void saveUser(User user) {
-        String sql = "insert into user " +
-                "(firstname, surname, address, tel_no, email, password, creation_timestamp) " +
-                "values (?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement preparedStatement = conn.prepareStatement(sql)){
+        String sql = "INSERT INTO user (firstname, surname, address, telno, email, password, creation_timestamp) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, user.getFirstname());
             preparedStatement.setString(2, user.getSurname());
             preparedStatement.setString(3, user.getAddress());
-            preparedStatement.setString(4, user.getTelNO());
+            preparedStatement.setString(4, user.getTelno());
             preparedStatement.setString(5, user.getEmail());
             preparedStatement.setString(6, user.getPassword());
             preparedStatement.setTimestamp(7, new Timestamp(System.currentTimeMillis()));
             preparedStatement.executeUpdate();
+
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     user.setId(generatedKeys.getLong(1));
-                    user.setCreationTimestamp(generatedKeys.getTimestamp(7));
+                    // You don't need to set creationTimestamp here as it's already set during the insert
                 }
             }
         } catch (SQLException e) {
@@ -103,14 +102,15 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+
     @Override
     public void updateUser(User user) {
-        String sql = "UPDATE user SET firstname = ?, surname = ?, address = ?, tel_no = ?, email = ?, password = ?, last_modified_timestamp = ? WHERE user_id = ?";
+        String sql = "UPDATE user SET firstname = ?, surname = ?, address = ?, telno = ?, email = ?, password = ?, last_modified_timestamp = ? WHERE user_id = ?";
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, user.getFirstname());
             preparedStatement.setString(2, user.getSurname());
             preparedStatement.setString(3, user.getAddress());
-            preparedStatement.setString(4, user.getTelNO());
+            preparedStatement.setString(4, user.getTelno());
             preparedStatement.setString(5, user.getEmail());
             preparedStatement.setString(6, user.getPassword());
             preparedStatement.setTimestamp(7, new Timestamp(System.currentTimeMillis()));

@@ -28,9 +28,9 @@ public class CarDaoImpl implements CarDao {
                 if (rs.next()){
                     Car car = new Car();
                     car.setCarId(id);
-                    car.setCarName(rs.getString("car_name"));
+                    car.setName(rs.getString("name"));
                     car.setPrice(rs.getInt("price"));
-                    car.setCarDesc(rs.getString("car_desc"));
+                    car.setNotation(rs.getString("notation"));
                     car.setManufacturer(rs.getString("manufacturer"));
                     car.setManufacturedYear(rs.getInt("manufactured_year"));
                     car.setLastModifiedTimestamp(rs.getTimestamp("last_modified_timestamp"));
@@ -55,9 +55,9 @@ public class CarDaoImpl implements CarDao {
             while (rs.next()){
                 Car car = new Car();
                 car.setCarId(rs.getLong("car_id"));
-                car.setCarName(rs.getString("car_name"));
+                car.setName(rs.getString("name"));
                 car.setPrice(rs.getInt("price"));
-                car.setCarDesc(rs.getString("car_desc"));
+                car.setNotation(rs.getString("notation"));
                 car.setManufacturer(rs.getString("manufacturer"));
                 car.setManufacturedYear(rs.getInt("manufactured_year"));
                 car.setLastModifiedTimestamp(rs.getTimestamp("last_modified_timestamp"));
@@ -72,18 +72,22 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public void save(Car car) {
-        String sql = "insert into car (car_name, price, car_desc, manufacturer, manufactured_year, creation_timestamp) values (?,?,?,?,?,?)";
-        try (PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setString(1, car.getCarName());
+        String sql = "insert into car (name, price, notation, manufacturer, manufactured_year, creation_timestamp) values (?,?,?,?,?,?)";
+        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, car.getName());
             ps.setDouble(2, car.getPrice());
-            ps.setString(3, car.getCarDesc());
+            ps.setString(3, car.getNotation() != null ? car.getNotation() : "");
             ps.setString(4, car.getManufacturer());
             ps.setInt(5, car.getManufacturedYear());
+            ps.setTimestamp(6, new Timestamp(System.currentTimeMillis())); // Set the current timestamp
+
+            System.out.println("Executing SQL: " + ps.toString()); // Log the SQL statement
+
             ps.executeUpdate();
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     car.setCarId(generatedKeys.getLong(1));
-                    car.setCreationTimestamp(generatedKeys.getTimestamp(6));
+                    car.setCreationTimestamp(new Timestamp(System.currentTimeMillis())); // Set the current timestamp
                 }
             }
         } catch (SQLException e) {
@@ -93,11 +97,11 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public void updateCar(Car car, long id) {
-        String sql = "UPDATE car SET car_name = ?, price = ?, car_desc = ?, manufacturer = ?, manufactured_year = ?, last_modified_timestamp = ? WHERE car_id = ?";
+        String sql = "UPDATE car SET name = ?, price = ?, notation = ?, manufacturer = ?, manufactured_year = ?, last_modified_timestamp = ? WHERE car_id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, car.getCarName());
+            ps.setString(1, car.getName());
             ps.setFloat(2, car.getPrice());
-            ps.setString(3, car.getCarDesc());
+            ps.setString(3, car.getNotation());
             ps.setString(4, car.getManufacturer());
             ps.setInt(5, car.getManufacturedYear());
             ps.setTimestamp(6, car.getLastModifiedTimestamp());
@@ -118,5 +122,10 @@ public class CarDaoImpl implements CarDao {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public Connection getConnection() {
+        return this.conn;
     }
 }

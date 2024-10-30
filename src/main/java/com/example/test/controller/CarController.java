@@ -1,7 +1,5 @@
 package com.example.test.controller;
 
-
-import com.example.test.dao.CarDao;
 import com.example.test.dao.CarDaoImpl;
 import com.example.test.domain.Car;
 import com.example.test.service.CarService;
@@ -25,7 +23,7 @@ public class CarController {
         this.carDao = carDao;
     }
 
-    @PostMapping("/cars/registerCar")
+    @PostMapping("/registerCar")
     public void registerCar(@RequestBody Car car) {
         carService.saveCar(car);
     }

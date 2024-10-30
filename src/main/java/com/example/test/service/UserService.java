@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,5 +54,9 @@ public class UserService implements UserDetailsService {
 
     public void changePassword(PasswordChangeRequest request) {
         userDao.changePassword(request);
+    }
+
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
     }
 }
