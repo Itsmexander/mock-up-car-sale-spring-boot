@@ -3,7 +3,7 @@ package com.example.test.controller;
 
 import com.example.test.dto.PasswordChangeRequest;
 import com.example.test.domain.User;
-import com.example.test.service.UserService;
+import com.example.test.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,18 +18,18 @@ import java.util.List;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthController(UserService userService, AuthenticationManager authenticationManager) {
-        this.userService = userService;
+    public AuthController(UserServiceImpl userServiceImpl, AuthenticationManager authenticationManager) {
+        this.userServiceImpl = userServiceImpl;
         this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/register")
     public void registerUser(@RequestBody User user) {
-        userService.saveUser(user);
+        userServiceImpl.saveUser(user);
     }
 
     @PostMapping("/login")
@@ -42,11 +42,11 @@ public class AuthController {
     }
     @PostMapping("/passwordChange")
     public ResponseEntity<?> changePassword(@RequestBody PasswordChangeRequest request) {
-        userService.changePassword(request);
+        userServiceImpl.changePassword(request);
         return ResponseEntity.ok("Password changed successfully");
     }
     @GetMapping("/test/getalluser")
     public List<User> getAllUser() {
-        return userService.getAllUsers();
+        return userServiceImpl.getAllUsers();
     }
 }

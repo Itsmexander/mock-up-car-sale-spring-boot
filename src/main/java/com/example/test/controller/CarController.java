@@ -2,7 +2,7 @@ package com.example.test.controller;
 
 import com.example.test.dao.CarDaoImpl;
 import com.example.test.domain.Car;
-import com.example.test.service.CarService;
+import com.example.test.service.CarServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,38 +14,38 @@ import java.util.Optional;
 
 public class CarController {
 
-    private final CarService carService;
+    private final CarServiceImpl carServiceImpl;
     private final CarDaoImpl carDao;
 
     @Autowired
-    public CarController(CarService carService, CarDaoImpl carDao) {
-        this.carService = carService;
+    public CarController(CarServiceImpl carServiceImpl, CarDaoImpl carDao) {
+        this.carServiceImpl = carServiceImpl;
         this.carDao = carDao;
     }
 
     @PostMapping("/registerCar")
     public void registerCar(@RequestBody Car car) {
-        carService.saveCar(car);
+        carServiceImpl.saveCar(car);
     }
 
     @GetMapping("/store")
     public List<Car> getAllCars() {
-        return carService.getAll();
+        return carServiceImpl.getAll();
     }
 
     @PutMapping("/updateCar/{id}")
     public void updateCar(@RequestBody Car car, @PathVariable long id ) {
-        carService.updateCar(car,id);
+        carServiceImpl.updateCar(car,id);
 
     }
 
     @DeleteMapping("/deleteCar/{id}")
     public void deleteCar(Car car,@PathVariable Long id) {
-        carService.deleteCar(car,id);
+        carServiceImpl.deleteCar(car,id);
     }
 
     @GetMapping("/car/{id}")
     public Optional<Car> getCarById(@PathVariable Long id) {
-        return carService.getCarById(id);
+        return carServiceImpl.getCarById(id);
     }
 }

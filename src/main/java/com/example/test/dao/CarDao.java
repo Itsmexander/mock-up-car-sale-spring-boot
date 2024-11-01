@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CarDao {
-    Optional<Car> getCarById(long id);
+    Optional<Car> getCarById(Long id);
     List<Car> getAll();
     void save(Car car);
-    void updateCar(Car car, long id);
-    void deleteCar(Car car, long id);
+    void updateCar(Car car, Long id);
+    void deleteCar(Car car, Long id);
     Connection getConnection();
 }

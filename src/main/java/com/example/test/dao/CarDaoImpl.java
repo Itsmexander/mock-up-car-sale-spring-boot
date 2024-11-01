@@ -19,7 +19,7 @@ public class CarDaoImpl implements CarDao {
     }
 
     @Override
-    public Optional<Car> getCarById(long id) {
+    public Optional<Car> getCarById(Long id) {
         String sql = "select *" +
                 " from car where car_id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -56,7 +56,7 @@ public class CarDaoImpl implements CarDao {
                 Car car = new Car();
                 car.setCarId(rs.getLong("car_id"));
                 car.setName(rs.getString("name"));
-                car.setPrice(rs.getInt("price"));
+                car.setPrice(rs.getFloat("price"));
                 car.setNotation(rs.getString("notation"));
                 car.setManufacturer(rs.getString("manufacturer"));
                 car.setManufacturedYear(rs.getInt("manufactured_year"));
@@ -96,7 +96,7 @@ public class CarDaoImpl implements CarDao {
     }
 
     @Override
-    public void updateCar(Car car, long id) {
+    public void updateCar(Car car, Long id) {
         String sql = "UPDATE car SET name = ?, price = ?, notation = ?, manufacturer = ?, manufactured_year = ?, last_modified_timestamp = ? WHERE car_id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, car.getName());
@@ -113,7 +113,7 @@ public class CarDaoImpl implements CarDao {
     }
 
     @Override
-    public void deleteCar(Car car, long id) {
+    public void deleteCar(Car car, Long id) {
         String sql = "delete from car where car_id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setLong(1, car.getCarId());
