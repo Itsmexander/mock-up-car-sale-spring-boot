@@ -62,8 +62,8 @@ public class CarController {
     }
 
     @GetMapping("/car/search")
-    public List<Map<String, Object>> searchItems(@RequestParam String query) {
-        return carServiceImpl.searchCars(query);
+    public List<Map<String, Object>> searchItems(@RequestParam String query,@RequestParam(defaultValue = "name") String sortBy,@RequestParam(defaultValue = "asc") String sortOrder) {
+        return carServiceImpl.searchCars(query, sortBy, sortOrder);
     }
 
     @GetMapping("/car/{id}")

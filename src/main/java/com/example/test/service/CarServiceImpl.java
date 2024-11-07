@@ -85,8 +85,21 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Map<String, Object>> searchCars(String query) {
-        String sql = "SELECT * FROM car WHERE name LIKE ?";
+    public List<Map<String, Object>> searchCars(String query, String sortBy, String sortOrder) {
+        switch (sortBy) {
+            case "carId":
+            case "name":
+            case "price":
+            case "notation":
+            case "manufacturer":
+            case "manufacturedYear":
+            case "timestamp":
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid sortBy parameter");
+        }
+
+        String sql = "SELECT * FROM car WHERE name LIKE ? ORDER BY " + sortBy + " " + sortOrder;
         return jdbcTemplate.queryForList(sql, "%" + query + "%");
     }
     @Override
