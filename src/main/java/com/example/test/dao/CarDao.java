@@ -11,6 +11,6 @@ public interface CarDao {
     List<Car> getAll();
     void save(Car car);
     void updateCar(Car car, Long id);
-    void deleteCar(Car car, Long id);
+    void deleteCar(long id);
     Connection getConnection();
 }

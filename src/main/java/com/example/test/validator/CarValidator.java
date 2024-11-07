@@ -1,6 +1,7 @@
 package com.example.test.validator;
 
 import com.example.test.domain.Car;
+import com.example.test.exception.ValidatorException;
 
 public class CarValidator  implements Validator<Car> {
     @Override

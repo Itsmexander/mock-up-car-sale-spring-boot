@@ -7,8 +7,8 @@ import lombok.Setter;
 @Setter
 public class CarInfoUpdateRequest {
     private long carId;
-    private String carName;
-    private String carDesc;
+    private String name;
+    private String notation;
     private float price;
     private String manufacturer;
     private String manufacturedYear;

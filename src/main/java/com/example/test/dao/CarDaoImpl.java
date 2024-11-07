@@ -113,10 +113,11 @@ public class CarDaoImpl implements CarDao {
     }
 
     @Override
-    public void deleteCar(Car car, Long id) {
+    public void deleteCar(long id) {
         String sql = "delete from car where car_id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setLong(1, car.getCarId());
+            ps.setLong(1, id);
+            System.out.println("Executing SQL: " + ps.toString());
             ps.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.example.test.validator;
 
 import com.example.test.domain.User;
+import com.example.test.exception.ValidatorException;
 
 public class UserValidator implements Validator<User> {
 

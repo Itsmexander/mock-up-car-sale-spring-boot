@@ -5,7 +5,7 @@ import com.example.test.dao.UserDaoImpl;
 import com.example.test.domain.User;
 import com.example.test.dto.PasswordChangeRequest;
 import com.example.test.validator.UserValidator;
-import com.example.test.validator.ValidatorException;
+import com.example.test.exception.ValidatorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
