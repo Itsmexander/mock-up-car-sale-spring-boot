@@ -15,7 +15,7 @@ public interface CarService {
     Optional<Car> getCarById(Long id);
     void deleteCar(long id);
     void updateCar(CarInfoUpdateRequest carInfoUpdateRequest, long id) throws CustomValidationException;
-    List<Map<String, Object>> searchCars(String query, String sortBy, String sortOrder);
+    List<Map<String, Object>> searchCars(String query, String sortBy, String sortOrder, double minPrice, double maxPrice, int minYear, int maxYear, int page, int size);
     List<Car> getCars(int page, int size);
     long getTotalCars();
 }

@@ -40,12 +40,20 @@ public class CarController {
 //    }
 
     @GetMapping("/store")
-    public ResponseEntity<List<Car>> getCars(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "15")int size) {
-        List<Car> cars = carServiceImpl.getCars(page, size);
+    public ResponseEntity<List<Map<String, Object>>> searchItems(@RequestParam String query,
+                                                                 @RequestParam(defaultValue = "name") String sortBy,
+                                                                 @RequestParam(defaultValue = "asc") String sortOrder,
+                                                                 @RequestParam(defaultValue = "0") int page,
+                                                                 @RequestParam(defaultValue = "15") int size,
+                                                                 @RequestParam(defaultValue = "0") double minPrice,
+                                                                 @RequestParam(defaultValue = "1000000") double maxPrice,
+                                                                 @RequestParam(defaultValue = "1900") int minYear,
+                                                                 @RequestParam(defaultValue = "2024") int maxYear) {
+        List<Map<String, Object>> cars = carServiceImpl.searchCars(query, sortBy, sortOrder, minPrice, maxPrice, minYear, maxYear, page, size);
         long total = carServiceImpl.getTotalCars();
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", String.valueOf(total));
-        return new ResponseEntity<>(cars,headers, HttpStatus.OK);
+        return new ResponseEntity<>(cars, headers, HttpStatus.OK);
     }
 
     @PutMapping("/update-car/{id}")
@@ -60,11 +68,11 @@ public class CarController {
         System.out.println("delete car id:"+id);
         carServiceImpl.deleteCar(id);
     }
-
-    @GetMapping("/car/search")
-    public List<Map<String, Object>> searchItems(@RequestParam String query,@RequestParam(defaultValue = "name") String sortBy,@RequestParam(defaultValue = "asc") String sortOrder) {
-        return carServiceImpl.searchCars(query, sortBy, sortOrder);
-    }
+//
+//    @GetMapping("/car/search")
+//    public List<Map<String, Object>> searchItems(@RequestParam String query,@RequestParam(defaultValue = "name") String sortBy,@RequestParam(defaultValue = "asc") String sortOrder) {
+//        return carServiceImpl.searchCars(query, sortBy, sortOrder);
+//    }
 
     @GetMapping("/car/{id}")
     public Optional<Car> getCarById(@PathVariable long id) {

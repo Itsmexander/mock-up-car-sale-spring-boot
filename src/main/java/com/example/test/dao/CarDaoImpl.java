@@ -21,7 +21,7 @@ public class CarDaoImpl implements CarDao {
     @Override
     public Optional<Car> getCarById(Long id) {
         String sql = "select *" +
-                " from car where car_id = ?";
+                " from car where carId = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
@@ -32,7 +32,7 @@ public class CarDaoImpl implements CarDao {
                     car.setPrice(rs.getInt("price"));
                     car.setNotation(rs.getString("notation"));
                     car.setManufacturer(rs.getString("manufacturer"));
-                    car.setManufacturedYear(rs.getInt("manufactured_year"));
+                    car.setManufacturedYear(rs.getInt("manufacturedYear"));
                     car.setLastModifiedTimestamp(rs.getTimestamp("last_modified_timestamp"));
                     car.setCreationTimestamp(rs.getTimestamp("creation_timestamp"));
                     return Optional.of(car);
@@ -59,7 +59,7 @@ public class CarDaoImpl implements CarDao {
                 car.setPrice(rs.getFloat("price"));
                 car.setNotation(rs.getString("notation"));
                 car.setManufacturer(rs.getString("manufacturer"));
-                car.setManufacturedYear(rs.getInt("manufactured_year"));
+                car.setManufacturedYear(rs.getInt("manufacturedYear"));
                 car.setLastModifiedTimestamp(rs.getTimestamp("last_modified_timestamp"));
                 car.setCreationTimestamp(rs.getTimestamp("creation_timestamp"));
                 cars.add(car);
@@ -72,7 +72,7 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public void save(Car car) {
-        String sql = "insert into car (name, price, notation, manufacturer, manufactured_year, creation_timestamp) values (?,?,?,?,?,?)";
+        String sql = "insert into car (name, price, notation, manufacturer, manufacturedYear, creation_timestamp) values (?,?,?,?,?,?)";
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, car.getName());
             ps.setDouble(2, car.getPrice());
@@ -97,7 +97,7 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public void updateCar(Car car, Long id) {
-        String sql = "UPDATE car SET name = ?, price = ?, notation = ?, manufacturer = ?, manufactured_year = ?, last_modified_timestamp = ? WHERE car_id = ?";
+        String sql = "UPDATE car SET name = ?, price = ?, notation = ?, manufacturer = ?, manufacturedYear = ?, last_modified_timestamp = ? WHERE carId = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, car.getName());
             ps.setFloat(2, car.getPrice());
@@ -114,7 +114,7 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public void deleteCar(long id) {
-        String sql = "delete from car where car_id = ?";
+        String sql = "delete from car where carId = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setLong(1, id);
             System.out.println("Executing SQL: " + ps.toString());

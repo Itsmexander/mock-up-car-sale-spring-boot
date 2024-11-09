@@ -42,7 +42,7 @@ CREATE TABLE `car` (
 -- Dumping data for table `car`
 --
 
-INSERT INTO `car` (`car_id`, `name`, `price`, `notation`, `manufacturer`, `manufactured_year`, `last_modified_timestamp`, `creation_timestamp`) VALUES
+INSERT INTO `car` (carId, `name`, `price`, `notation`, `manufacturer`, manufacturedYear, `last_modified_timestamp`, `creation_timestamp`) VALUES
 (15, 'Sedan', 1010, '1990 sedan white', 'toyota', 1990, '2024-11-06 08:13:50', '2024-11-02 03:28:53'),
 (16, 'test16', 16, 'test16', 'test16', 2016, '2024-11-06 08:09:51', '2024-11-02 07:21:16'),
 (17, 'test17', 17.17, 'test17', 'test17', 2017, '2024-11-06 02:57:51', '2024-11-06 02:57:51'),
@@ -106,7 +106,7 @@ INSERT INTO `user` (`id`, `address`, `creation_timestamp`, `email`, `firstname`,
 -- Indexes for table `car`
 --
 ALTER TABLE `car`
-  ADD PRIMARY KEY (`car_id`);
+  ADD PRIMARY KEY (carId);
 
 --
 -- Indexes for table `user`
@@ -122,7 +122,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `car`
 --
 ALTER TABLE `car`
-  MODIFY `car_id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY carId bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `user`

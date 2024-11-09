@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -85,23 +86,26 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Map<String, Object>> searchCars(String query, String sortBy, String sortOrder) {
-        switch (sortBy) {
-            case "carId":
-            case "name":
-            case "price":
-            case "notation":
-            case "manufacturer":
-            case "manufacturedYear":
-            case "timestamp":
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid sortBy parameter");
+    public List<Map<String, Object>> searchCars(String query, String sortBy, String sortOrder, double minPrice, double maxPrice, int minYear, int maxYear, int page, int size) {
+        // Validate sortBy parameter to prevent SQL injection
+        List<String> validSortColumns = Arrays.asList("carId", "name", "price", "notation", "manufacturer", "manufacturedYear", "creation_timestamp");
+        if (!validSortColumns.contains(sortBy)) {
+            throw new IllegalArgumentException("Invalid sortBy parameter");
         }
 
-        String sql = "SELECT * FROM car WHERE name LIKE ? ORDER BY " + sortBy + " " + sortOrder;
-        return jdbcTemplate.queryForList(sql, "%" + query + "%");
+        // Validate sortOrder parameter
+        if (!sortOrder.equalsIgnoreCase("asc") && !sortOrder.equalsIgnoreCase("desc")) {
+            throw new IllegalArgumentException("Invalid sortOrder parameter");
+        }
+
+        int offset = page * size;
+        String sql = "SELECT * FROM car WHERE (name LIKE ? OR notation LIKE ? OR manufacturer LIKE ?) AND price BETWEEN ? AND ? AND manufacturedYear BETWEEN ? AND ? ORDER BY " + sortBy + " " + sortOrder + " LIMIT ? OFFSET ?";
+        return jdbcTemplate.queryForList(sql, "%" + query + "%", "%" + query + "%", "%" + query + "%", minPrice, maxPrice, minYear, maxYear, size, offset);
     }
+
+
+
+
     @Override
     public List<Car> getCars(int page, int size) {
         int offset = (page) * size;
