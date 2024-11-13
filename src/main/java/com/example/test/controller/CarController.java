@@ -44,7 +44,7 @@ public class CarController {
                                                                  @RequestParam(defaultValue = "name") String sortBy,
                                                                  @RequestParam(defaultValue = "asc") String sortOrder,
                                                                  @RequestParam(defaultValue = "0") int page,
-                                                                 @RequestParam(defaultValue = "15") int size,
+                                                                 @RequestParam(defaultValue = "10") int size,
                                                                  @RequestParam(defaultValue = "0") double minPrice,
                                                                  @RequestParam(defaultValue = "1000000") double maxPrice,
                                                                  @RequestParam(defaultValue = "1900") int minYear,
