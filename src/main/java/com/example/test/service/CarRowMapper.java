@@ -10,12 +10,12 @@ public class CarRowMapper implements RowMapper<Car> {
     @Override
     public Car mapRow(ResultSet rs, int rowNum) throws SQLException {
         Car car = new Car();
-        car.setCarId(rs.getInt("car_id"));
+        car.setCarId(rs.getInt("carId"));
         car.setName(rs.getString("name"));
         car.setPrice(rs.getFloat("price"));
         car.setNotation(rs.getString("notation"));
         car.setManufacturer(rs.getString("manufacturer"));
-        car.setManufacturedYear(rs.getInt("manufactured_year"));
+        car.setManufacturedYear(rs.getInt("manufacturedYear"));
         car.setCreationTimestamp(rs.getTimestamp("creation_timestamp"));
         return car;
     }

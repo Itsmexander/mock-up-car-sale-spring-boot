@@ -1,6 +1,7 @@
 package com.example.test.exception;
 
-public class CustomValidationException extends Throwable {
-    public CustomValidationException(String s) {
+public class CustomValidationException extends RuntimeException {
+    public CustomValidationException(String message) {
+        super(message);
     }
 }

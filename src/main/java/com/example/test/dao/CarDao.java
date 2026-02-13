@@ -2,7 +2,6 @@ package com.example.test.dao;
 
 import com.example.test.domain.Car;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,5 +11,7 @@ public interface CarDao {
     void save(Car car);
     void updateCar(Car car, Long id);
     void deleteCar(long id);
-    Connection getConnection();
+    List<Car> searchCars(String query, String sortBy, String sortOrder, double minPrice, double maxPrice, int minYear, int maxYear, int page, int size);
+    List<Car> getCars(int page, int size);
+    long getTotalCars();
 }
