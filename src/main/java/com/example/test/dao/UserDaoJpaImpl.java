@@ -52,13 +52,13 @@ public class UserDaoJpaImpl implements UserDao {
     @Override
     public void changePassword(PasswordChangeRequest request) {
         User user = userRepository.findById(request.getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new com.example.test.exception.UserNotFoundException("User not found"));
 
         if (passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
             user.setPassword(passwordEncoder.encode(request.getNewPassword()));
             userRepository.save(user);
         } else {
-            throw new RuntimeException("Old password is incorrect");
+            throw new org.springframework.security.authentication.BadCredentialsException("Old password is incorrect");
         }
     }
 }

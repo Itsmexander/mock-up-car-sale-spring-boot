@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 
 import java.util.Map;
 
@@ -43,6 +44,33 @@ class GlobalExceptionHandlerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Invalid parameter", response.getBody().get("error"));
+    }
+
+    @Test
+    void handleDuplicateEmailException() {
+        DuplicateEmailException ex = new DuplicateEmailException("Email already in use");
+        ResponseEntity<Map<String, String>> response = handler.handleDuplicateEmailException(ex);
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals("Email already in use", response.getBody().get("error"));
+    }
+
+    @Test
+    void handleUserNotFoundException() {
+        UserNotFoundException ex = new UserNotFoundException("User not found");
+        ResponseEntity<Map<String, String>> response = handler.handleUserNotFoundException(ex);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals("User not found", response.getBody().get("error"));
+    }
+
+    @Test
+    void handleBadCredentialsException() {
+        BadCredentialsException ex = new BadCredentialsException("Bad credentials");
+        ResponseEntity<Map<String, String>> response = handler.handleBadCredentialsException(ex);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals("Wrong password", response.getBody().get("error"));
     }
 
     @Test

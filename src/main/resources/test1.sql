@@ -90,13 +90,10 @@ INSERT INTO `user` (`id`, `address`, `creation_timestamp`, `email`, `firstname`,
 (1, '9/35 Phaholyothin 44 Phaholyothin Rd.', '2024-10-24 07:01:57.000000', 'chawishp@hotmail.com', 'Chawish', NULL, '$2a$12$cjzM2BXuQy4LTsYqMcBKUejuNdpm/7tZd43CGplYUXZTBhi0fe4Gm', 'Pipopsophonchai', '123213'),
 (2, 'fsadfdsa', '2024-10-25 05:11:05.000000', 'your.name@email.com', 'asdad', NULL, '$2a$12$t3C27h6K5c8XbKm4VVR2..Mn9ZKmuIrrg3yF8N6DEVa5ArSAP0b3K', 'sadfdsafdsa', '1234231432'),
 (3, '', '2024-10-25 08:49:46.000000', 'test@e.com', ' ', NULL, '$2a$12$VHF3WIx9a6hGkfY7jDGg3.IXNxfyibsOviHP36RgJO2tZh5dPNO0W', NULL, ''),
-(4, '', '2024-10-25 08:50:43.000000', 'test@e.com', ' ', NULL, '$2a$12$uTL4Xm.Ovcazz58rTUb.6OCRZMNYNTY66cQf97PxZ0dyBrahlHzpy', NULL, 'dsaf'),
 (5, 'test', '2024-10-25 10:21:12.000000', 'test@test.com', 'test', NULL, '$2a$12$O5aewCyPUeVD9ulDCvMW8.CVITtFkGONNWtBqlim/oFp660pqu9Y6', 'test', '123'),
 (11, '9/35 phaholyothin 44', '2024-10-30 10:14:04.000000', 'test1@test.com', 'Chawish', '2024-10-30 10:30:42.000000', '$2a$12$i/sRYFCzPygX17N3itUY5OP/3ZTYvjT6Xljaqs1DfgqKX4WCVXjeO', 'Pipopsophonchai', '0614953963'),
 (12, '9/35 Soi Phaholyothin 44', '2024-10-31 16:08:18.000000', 'shenlijun@138.cn', 'Shen', NULL, '$2a$12$mieCLgCns0pp8OvsGyxsGeCdl81zOJzwBUipZNwKOEOQCLiMk/cua', 'li jun', '1234535344'),
-(14, '9/35 Soi Phaholyothin 44 Phaholyothin Rd.', '2024-10-31 16:50:15.000000', 'shenlijun@138.cn', 'chawish', NULL, '$2a$12$DDwKrdhdAnWW3CD6KVmLf.WOXCc76eyKnMH5iaUpPuvW1f1inoIO2', 'Pipopsophonchai', '1234567890'),
-(15, 'test1', '2024-10-31 17:31:06.000000', 'test1@yahoo.com', 'test01', NULL, '$2a$12$/LBMOCLvVdK3BQMRWkc6Wu0ayGFpxloVQOmu4eq43syEZ7ZZAD2mO', 'lastname', '0123456789'),
-(16, '9/35 Soi Phaholyothin 44', '2024-11-01 16:08:53.000000', 'shenlijun@138.cn', 'Shen', NULL, '$2a$12$N/BwccPmZNGc8rkRv8SvVuos72e69mw65LiEH.5g7B0gEBegoLbLq', 'li jun', '0123456789');
+(15, 'test1', '2024-10-31 17:31:06.000000', 'test1@yahoo.com', 'test01', NULL, '$2a$12$/LBMOCLvVdK3BQMRWkc6Wu0ayGFpxloVQOmu4eq43syEZ7ZZAD2mO', 'lastname', '0123456789');
 
 --
 -- Indexes for dumped tables
@@ -112,7 +109,8 @@ ALTER TABLE `car`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables

@@ -3,6 +3,7 @@ package com.example.test.service;
 import com.example.test.dao.UserDao;
 import com.example.test.domain.User;
 import com.example.test.dto.PasswordChangeRequest;
+import com.example.test.exception.DuplicateEmailException;
 import com.example.test.exception.ValidatorException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,7 @@ class UserServiceImplTest {
 
     @Test
     void saveUser_valid() {
+        when(userDao.getUserByEmail("john@example.com")).thenReturn(Optional.empty());
         when(passwordEncoder.encode("password123")).thenReturn("hashedPassword");
 
         userService.saveUser(validUser());
@@ -64,6 +66,14 @@ class UserServiceImplTest {
         user.setFirstname("");
 
         assertThrows(ValidatorException.class, () -> userService.saveUser(user));
+        verify(userDao, never()).saveUser(any());
+    }
+
+    @Test
+    void saveUser_duplicateEmail_throwsDuplicateEmailException() {
+        when(userDao.getUserByEmail("john@example.com")).thenReturn(Optional.of(validUser()));
+
+        assertThrows(DuplicateEmailException.class, () -> userService.saveUser(validUser()));
         verify(userDao, never()).saveUser(any());
     }
 

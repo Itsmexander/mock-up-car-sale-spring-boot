@@ -26,7 +26,13 @@
       "Bash(JAVA_HOME=\"C:/Program Files/Eclipse Adoptium/jdk-21.0.7.6-hotspot\" ./mvnw:*)",
       "Bash(JAVA_HOME=\"/c/Program Files/Eclipse Adoptium/jdk-21.0.7.6-hotspot\" ./mvnw:*)",
       "Bash(JAVA_HOME=\"/c/Program Files/Java/jdk-21\" ./mvnw clean test:*)",
-      "Bash(JAVA_HOME=\"/c/Program Files/Java/jdk-21\" ./mvnw test:*)"
+      "Bash(JAVA_HOME=\"/c/Program Files/Java/jdk-21\" ./mvnw test:*)",
+      "Bash(netstat:*)",
+      "Bash(taskkill:*)",
+      "Bash(grep:*)",
+      "Bash(sort -t'%' -k1 -n)",
+      "Bash(python3:*)",
+      "Bash(winget upgrade:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,9 +1,12 @@
 package com.example.test.cucumber;
 
 import com.example.test.domain.User;
+import com.example.test.dto.PasswordChangeRequest;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -81,5 +84,73 @@ public class UserStepDefinitions {
     public void noUserShouldHaveAPasswordField() throws Exception {
         String content = sharedState.getResult().getResponse().getContentAsString();
         assertFalse(content.contains("password"));
+    }
+
+    @Given("a user with email {string} and password {string} exists in the database")
+    public void aUserWithEmailAndPasswordExistsInTheDatabase(String email, String password) {
+        String hashedPassword = passwordEncoder.encode(password);
+        jdbcTemplate.update(
+                "INSERT INTO `user` (firstname, surname, address, telno, email, password, creation_timestamp) VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)",
+                "TestUser", "TestSurname", "123 Test St", "0123456789", email, hashedPassword);
+        Long userId = jdbcTemplate.queryForObject("SELECT id FROM `user` WHERE email = ?", Long.class, email);
+        sharedState.setUserId(userId);
+    }
+
+    @When("I login with email {string} and password {string}")
+    public void iLoginWithEmailAndPassword(String email, String password) throws Exception {
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        sharedState.setResult(mockMvc.perform(post("/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user)))
+                .andReturn());
+    }
+
+    @And("the response should contain a token")
+    public void theResponseShouldContainAToken() throws Exception {
+        String content = sharedState.getResult().getResponse().getContentAsString();
+        JsonNode json = objectMapper.readTree(content);
+        assertNotNull(json.get("token"), "Response should contain a token");
+        assertFalse(json.get("token").asText().isBlank(), "Token should not be blank");
+    }
+
+    @And("the response should contain a userId")
+    public void theResponseShouldContainAUserId() throws Exception {
+        String content = sharedState.getResult().getResponse().getContentAsString();
+        JsonNode json = objectMapper.readTree(content);
+        assertNotNull(json.get("userId"), "Response should contain a userId");
+        assertTrue(json.get("userId").asLong() > 0, "userId should be positive");
+    }
+
+    @Then("the error message should be {string}")
+    public void theErrorMessageShouldBe(String expectedMessage) throws Exception {
+        String content = sharedState.getResult().getResponse().getContentAsString();
+        JsonNode json = objectMapper.readTree(content);
+        assertEquals(expectedMessage, json.get("error").asText());
+    }
+
+    @When("I change password for that user with old password {string} and new password {string}")
+    public void iChangePasswordForThatUser(String oldPassword, String newPassword) throws Exception {
+        PasswordChangeRequest request = new PasswordChangeRequest();
+        request.setId(sharedState.getUserId());
+        request.setOldPassword(oldPassword);
+        request.setNewPassword(newPassword);
+        sharedState.setResult(mockMvc.perform(post("/auth/passwordChange")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andReturn());
+    }
+
+    @When("I change password for user id {long} with old password {string} and new password {string}")
+    public void iChangePasswordForUserId(long userId, String oldPassword, String newPassword) throws Exception {
+        PasswordChangeRequest request = new PasswordChangeRequest();
+        request.setId(userId);
+        request.setOldPassword(oldPassword);
+        request.setNewPassword(newPassword);
+        sharedState.setResult(mockMvc.perform(post("/auth/passwordChange")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andReturn());
     }
 }

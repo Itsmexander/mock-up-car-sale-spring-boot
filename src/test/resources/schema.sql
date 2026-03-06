@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `user` (
     surname VARCHAR(255),
     address VARCHAR(255),
     telno VARCHAR(10),
-    email VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
     password VARCHAR(255),
     creation_timestamp TIMESTAMP,
     last_modified_timestamp TIMESTAMP

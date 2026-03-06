@@ -132,6 +132,15 @@ class CarServiceImplTest {
     }
 
     @Test
+    void searchCars_descSortOrder() {
+        when(carDao.searchCars(any(), any(), eq("desc"), anyDouble(), anyDouble(), anyInt(), anyInt(), anyInt(), anyInt()))
+                .thenReturn(List.of(validCar()));
+
+        List<Car> result = carService.searchCars("Toyota", "name", "desc", 0, 1000000, 1900, 2024, 0, 10);
+        assertEquals(1, result.size());
+    }
+
+    @Test
     void getCars() {
         when(carDao.getCars(0, 10)).thenReturn(List.of(validCar()));
 

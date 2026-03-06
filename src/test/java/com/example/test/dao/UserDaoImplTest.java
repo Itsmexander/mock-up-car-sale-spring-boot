@@ -2,6 +2,7 @@ package com.example.test.dao;
 
 import com.example.test.domain.User;
 import com.example.test.dto.PasswordChangeRequest;
+import com.example.test.exception.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collections;
@@ -138,8 +140,7 @@ class UserDaoImplTest {
         request.setOldPassword("wrongPass");
         request.setNewPassword("newPass");
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> userDao.changePassword(request));
-        assertEquals("Old password is incorrect", ex.getMessage());
+        assertThrows(BadCredentialsException.class, () -> userDao.changePassword(request));
     }
 
     @Test
@@ -152,7 +153,6 @@ class UserDaoImplTest {
         request.setOldPassword("oldPass");
         request.setNewPassword("newPass");
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> userDao.changePassword(request));
-        assertEquals("User not found", ex.getMessage());
+        assertThrows(UserNotFoundException.class, () -> userDao.changePassword(request));
     }
 }

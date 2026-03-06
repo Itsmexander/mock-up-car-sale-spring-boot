@@ -117,7 +117,7 @@ public class UserDaoJdbcImpl implements UserDao {
         }, request.getId());
 
         if (users.isEmpty()) {
-            throw new RuntimeException("User not found");
+            throw new com.example.test.exception.UserNotFoundException("User not found");
         }
 
         User user = users.get(0);
@@ -128,7 +128,7 @@ public class UserDaoJdbcImpl implements UserDao {
                     new Timestamp(System.currentTimeMillis()),
                     request.getId());
         } else {
-            throw new RuntimeException("Old password is incorrect");
+            throw new org.springframework.security.authentication.BadCredentialsException("Old password is incorrect");
         }
     }
 }
